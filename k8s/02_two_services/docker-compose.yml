@@ -1,0 +1,10 @@
+services:
+  service1:
+    image: ghcr.io/dliebg/thi_cnd_playground/k8s/02_two_services/service1:latest
+    environment:
+      - SERVICE2_URL=http://service2:8000/
+    ports:
+      - 8080:8000
+
+  service2:
+    image: ghcr.io/dliebg/thi_cnd_playground/k8s/02_two_services/service2:latest
