@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service2
+  labels:
+    app: service2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service2
+  template:
+    metadata:
+      labels:
+        app: service2
+    spec:
+      containers:
+        - name: service2
+          image: ghcr.io/dliebg/thi_cnd_playground/k8s/02_two_services/service2:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: SERVICE2_CUSTOMIZATION
+              value: test from kubectl deployment
