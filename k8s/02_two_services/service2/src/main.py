@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import os
 
 app = FastAPI()
 
@@ -6,4 +7,5 @@ app = FastAPI()
 def get_test():
     return {
         'message': 'Service 2',
+        'customization': os.getenv('SERVICE2_CUSTOMIZATION'),
     }
