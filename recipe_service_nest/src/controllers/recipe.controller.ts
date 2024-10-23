@@ -20,7 +20,6 @@ export class RecipeController {
 
     @Post()
     create_recipe(@Body() recipe: Recipe) {
-        console.log(recipe)
         return this.recipeService.create_recipe(recipe);
     }
 

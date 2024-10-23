@@ -1,5 +1,7 @@
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { create } from "domain";
 import { resolve } from "path";
 import { QuantifiedIngredient } from "src/entities/quantified-ingredient.entity";
 import { Recipe } from "src/entities/recipe.entity";
@@ -10,6 +12,7 @@ export class RecipeService {
     constructor(
         @InjectRepository(Recipe)
         private recipeRepository: Repository<Recipe>,
+        private readonly amqpConnection: AmqpConnection,
     ) { }
 
     get_recipes(): Promise<Recipe[]> {
@@ -21,15 +24,30 @@ export class RecipeService {
     }
 
     create_recipe(recipe: Recipe): Promise<Recipe> {
-        return this.recipeRepository.save(recipe);
+        let created = this.recipeRepository.save(recipe);
+        created.then(
+            r => this.amqpConnection.publish('recipe_service_exchange', 'recipe.created', r)
+        );
+
+        return created;
     }
 
     update_recipe(id: string, recipe: Recipe): Promise<Recipe> {
-        return this.recipeRepository.save({ id, ...recipe });
+        let updated = this.recipeRepository.save({ id, ...recipe });
+        updated.then(
+            u => this.amqpConnection.publish('recipe_service_exchange', 'recipe.updated', u)
+        );
+
+        return updated;
     }
 
     delete_recipe(id: string): Promise<DeleteResult> {
-        return this.recipeRepository.delete({ id });
+        let deleted = this.recipeRepository.delete({ id });
+        deleted.then(
+            d => this.amqpConnection.publish('recipe_service_exchange', 'recipe.deleted', {id, ...d})
+        );
+
+        return deleted;
     }
 
     get_total_ingredients(id: string): Promise<QuantifiedIngredient[]> {
