@@ -1,8 +1,6 @@
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { create } from "domain";
-import { resolve } from "path";
 import { QuantifiedIngredient } from "src/entities/quantified-ingredient.entity";
 import { Recipe } from "src/entities/recipe.entity";
 import { DeleteResult, Repository } from "typeorm";

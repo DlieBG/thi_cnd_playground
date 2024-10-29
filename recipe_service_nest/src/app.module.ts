@@ -10,11 +10,11 @@ import { RabbitmqService } from './adapters/rabbitmq/rabbitmq.service';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: process.env.POSTGRES_HOST || 'localhost',
       port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'recipe',
+      username: process.env.POSTGRES_USER || 'postgres',
+      password: process.env.POSTGRES_PASSWORD || 'postgres',
+      database: process.env.POSTGRES_DATABASE || 'recipe',
       entities: [Recipe],
       synchronize: true,
     }),
@@ -26,7 +26,7 @@ import { RabbitmqService } from './adapters/rabbitmq/rabbitmq.service';
           type: 'topic',
         }
       ],
-      uri: 'amqp://localhost:5672',
+      uri: process.env.RABBITMQ_URI || 'amqp://localhost:5672',
     }),
   ],
   controllers: [
