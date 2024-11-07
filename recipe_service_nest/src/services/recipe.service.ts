@@ -42,40 +42,35 @@ export class RecipeService {
         return deleted;
     }
 
-    get_total_ingredients(id: string): Promise<QuantifiedIngredient[]> {
-        return new Promise(
-            (resolve) => {
-                this.recipeRepository.findOneBy({ id })
-                    .then(
-                        (recipe) => {
-                            let total_ingredients = {};
+    async get_total_ingredients(id: string): Promise<QuantifiedIngredient[]> {
+        let recipe = await this.recipeRepository.findOneBy({ id });
 
-                            recipe.steps.forEach(
-                                (step) => {
-                                    step.ingredients.forEach(
-                                        (step) => {
-                                            if (total_ingredients[step.ingredient])
-                                                total_ingredients[step.ingredient] += step.quantity;
-                                            else
-                                                total_ingredients[step.ingredient] = step.quantity;
-                                        }
-                                    );
-                                }
-                            );
+        if (recipe) {
+            let total_ingredients = {};
 
-                            resolve(
-                                Object.keys(total_ingredients).map(
-                                    (key) => {
-                                        return {
-                                            ingredient: key,
-                                            quantity: total_ingredients[key],
-                                        } as QuantifiedIngredient;
-                                    }
-                                )
-                            );
+            recipe.steps.forEach(
+                (step) => {
+                    step.ingredients.forEach(
+                        (step) => {
+                            if (total_ingredients[step.ingredient])
+                                total_ingredients[step.ingredient] += step.quantity;
+                            else
+                                total_ingredients[step.ingredient] = step.quantity;
                         }
                     );
-            }
-        );
+                }
+            );
+
+            return Object.keys(total_ingredients).map(
+                (key) => {
+                    return {
+                        ingredient: key,
+                        quantity: total_ingredients[key],
+                    } as QuantifiedIngredient;
+                }
+            );
+        }
+
+        return [];
     }
 }
