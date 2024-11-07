@@ -12,7 +12,6 @@ describe('RecipeController', () => {
     const moduleRef = await Test.createTestingModule({
         controllers: [RecipeController],
         providers: [
-          RecipeService,
           {
             provide: RecipeService,
             useValue: {
@@ -61,7 +60,7 @@ describe('RecipeController', () => {
         ],
       }).compile();
 
-    recipeController = await moduleRef.resolve(RecipeController);
+    recipeController = await moduleRef.get<RecipeController>(RecipeController);
   });
 
   let sampleRecipe1: Recipe = {

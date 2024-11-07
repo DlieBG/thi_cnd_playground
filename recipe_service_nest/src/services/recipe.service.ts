@@ -21,29 +21,23 @@ export class RecipeService {
         return this.recipeRepository.findOneBy({ id });
     }
 
-    create_recipe(recipe: Recipe): Promise<Recipe> {
-        let created = this.recipeRepository.save(recipe);
-        created.then(
-            r => this.amqpConnection.publish('recipe_service_exchange', 'recipe.created', r)
-        );
+    async create_recipe(recipe: Recipe): Promise<Recipe> {
+        let created = await this.recipeRepository.save(recipe);
+        this.amqpConnection.publish('recipe_service_exchange', 'recipe.created', created);
 
         return created;
     }
 
-    update_recipe(id: string, recipe: Recipe): Promise<Recipe> {
-        let updated = this.recipeRepository.save({ id, ...recipe });
-        updated.then(
-            u => this.amqpConnection.publish('recipe_service_exchange', 'recipe.updated', u)
-        );
+    async update_recipe(id: string, recipe: Recipe): Promise<Recipe> {
+        let updated = await this.recipeRepository.save({ id, ...recipe });
+        this.amqpConnection.publish('recipe_service_exchange', 'recipe.updated', updated);
 
         return updated;
     }
 
-    delete_recipe(id: string): Promise<DeleteResult> {
-        let deleted = this.recipeRepository.delete({ id });
-        deleted.then(
-            d => this.amqpConnection.publish('recipe_service_exchange', 'recipe.deleted', {id, ...d})
-        );
+    async delete_recipe(id: string): Promise<DeleteResult> {
+        let deleted = await this.recipeRepository.delete({ id });
+        this.amqpConnection.publish('recipe_service_exchange', 'recipe.deleted', {id, ...deleted});
 
         return deleted;
     }
