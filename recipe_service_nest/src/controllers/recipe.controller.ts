@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { Recipe } from "src/entities/recipe.entity";
-import { RecipeService } from "src/services/recipe.service";
+import { Recipe } from "../entities/recipe.entity";
+import { RecipeService } from "../services/recipe.service";
 
 @Controller()
 export class RecipeController {
