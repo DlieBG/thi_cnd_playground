@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RecipeRepository {
-    public Optional<Recipe> getRecipe(String id);
+    Optional<Recipe> getRecipe(String id);
 
-    public List<Recipe> getRecipes();
+    List<Recipe> getRecipes();
 
-    public void saveRecipe(Recipe recipe);
+    Recipe saveRecipe(Recipe recipe);
 
-    public void deleteRecipe(String id);
+    void deleteRecipe(String id);
+
+    boolean exists(String id);
 }

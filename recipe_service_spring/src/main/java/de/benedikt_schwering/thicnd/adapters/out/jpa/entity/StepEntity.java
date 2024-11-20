@@ -14,11 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class StepEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuantifiedIngredientEntity> quantifiedIngredients;
-
     private String description;
 
     public static StepEntity fromStep(Step step) {

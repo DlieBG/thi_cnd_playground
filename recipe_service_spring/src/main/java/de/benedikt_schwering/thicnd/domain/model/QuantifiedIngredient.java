@@ -1,21 +1,14 @@
 package de.benedikt_schwering.thicnd.domain.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Setter;
-
-import java.util.UUID;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class QuantifiedIngredient {
-    @Setter(AccessLevel.NONE)
     private String id;
+    @NonNull
     private String ingredient;
+    @NonNull
     private double quantity;
-
-    public QuantifiedIngredient() {
-        this.id = UUID.randomUUID().toString();
-    }
 }

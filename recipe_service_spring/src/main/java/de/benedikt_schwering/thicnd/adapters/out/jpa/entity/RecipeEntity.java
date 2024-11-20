@@ -14,12 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class RecipeEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
     private String name;
-
     private String description;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StepEntity> steps;
 

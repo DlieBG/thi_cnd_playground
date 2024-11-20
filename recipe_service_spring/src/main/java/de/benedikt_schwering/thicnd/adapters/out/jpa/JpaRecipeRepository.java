@@ -27,12 +27,17 @@ public class JpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public void saveRecipe(Recipe recipe) {
-        jpaRecipeRepository.save(RecipeEntity.fromRecipe(recipe));
+    public Recipe saveRecipe(Recipe recipe) {
+        return jpaRecipeRepository.save(RecipeEntity.fromRecipe(recipe)).toRecipe();
     }
 
     @Override
     public void deleteRecipe(String id) {
         jpaRecipeRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean exists(String id) {
+        return jpaRecipeRepository.existsById(id);
     }
 }

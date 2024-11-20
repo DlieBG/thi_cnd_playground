@@ -3,7 +3,6 @@ package de.benedikt_schwering.thicnd.application;
 import de.benedikt_schwering.thicnd.domain.RecipeService;
 import de.benedikt_schwering.thicnd.domain.model.QuantifiedIngredient;
 import de.benedikt_schwering.thicnd.domain.model.Recipe;
-import de.benedikt_schwering.thicnd.domain.model.Step;
 import de.benedikt_schwering.thicnd.ports.out.RecipeRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,33 +28,19 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe addRecipe(String name, String description, List<Step> steps) {
-        var recipe = new Recipe();
-        recipe.setName(name);
-        recipe.setDescription(description);
-        recipe.setSteps(steps);
-
-        recipeRepository.saveRecipe(recipe);
-        return recipe;
+    public Recipe createRecipe(Recipe recipe) {
+        return recipeRepository.saveRecipe(recipe);
     }
 
     @Override
-    public Optional<Recipe> updateRecipe(String id, String name, String description, List<Step> steps) {
-        var recipe = recipeRepository.getRecipe(id);
-
-        if (recipe.isPresent()) {
-            var recipeUpdate = recipe.get();
-            recipeUpdate.setName(name);
-            recipeUpdate.setDescription(description);
-            recipeUpdate.setSteps(steps);
-
-            recipeRepository.saveRecipe(recipeUpdate);
-            return Optional.of(recipeUpdate);
+    public Optional<Recipe> updateRecipe(String id, Recipe recipe) {
+        if (recipeRepository.exists(id)) {
+            recipe.setId(id);
+            return Optional.of(recipeRepository.saveRecipe(recipe));
         }
 
         return Optional.empty();
     }
-
 
     @Override
     public void deleteRecipe(String id) {
