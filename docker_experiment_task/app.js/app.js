@@ -26,6 +26,7 @@ let healthStatus = true;
 async function connectToMongo() {
   try {
     await mongoClient.connect();
+    db = mongoClient.db();
     console.log('MongoDB connected');
   } catch (err) {
     console.error('MongoDB connection error:', err);
@@ -76,7 +77,7 @@ app.get('/counter', async (req, res) => {
 
 // Redis Counter
 app.get('/hello', async (req, res) => {
-  res.json({message: 'Hello, World!', hostname: require('os').hostname()})
+  res.json({message: 'Hello, Universe!', hostname: require('os').hostname()})
 });
 
 // MongoDB Logger

@@ -1,5 +1,2 @@
-docker-compose.yml
-Dockerfile
 .idea
-node_modules
 target
